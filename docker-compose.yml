@@ -10,7 +10,8 @@ services:
     env_file:
       - .umami.env
     depends_on:
-      - umami-postgres
+      umami-postgres:
+        condition: service_healthy
     networks:
       - traefik
     labels:
@@ -19,6 +20,8 @@ services:
       - "traefik.http.routers.umami.entrypoints=websecure"
       - "traefik.http.services.umami.loadbalancer.server.port=3000"
       - "traefik.http.routers.umami.tls.certresolver=cloudflare"
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "--spider", "http://localhost:3000" ]
 
   umami-postgres:
     image: postgres:alpine
@@ -31,6 +34,8 @@ services:
       - traefik
     labels:
       - "traefik.enable=false"
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postgres" ]
 
 
 networks:
