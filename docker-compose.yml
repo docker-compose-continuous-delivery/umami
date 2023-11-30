@@ -5,6 +5,7 @@ services:
   umami:
     image: ghcr.io/umami-software/umami:postgresql-latest
     restart: unless-stopped
+    container_name: umami
     environment:
       DATABASE_TYPE: postgresql
     env_file:
@@ -26,6 +27,7 @@ services:
   umami-postgres:
     image: postgres:alpine
     restart: unless-stopped
+    container_name: umami-postgres
     env_file:
       - .umami.env
     volumes:
