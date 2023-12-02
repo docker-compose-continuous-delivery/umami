@@ -21,6 +21,8 @@ services:
       - "traefik.http.routers.umami.entrypoints=websecure"
       - "traefik.http.services.umami.loadbalancer.server.port=3000"
       - "traefik.http.routers.umami.tls.certresolver=cloudflare"
+
+      - "com.centurylinklabs.watchtower.enable=true"
     healthcheck:
       test: [ "CMD", "wget", "-q", "--spider", "http://localhost:3000" ]
 
@@ -36,6 +38,8 @@ services:
       - traefik
     labels:
       - "traefik.enable=false"
+
+      - "com.centurylinklabs.watchtower.enable=true"
     healthcheck:
       test: [ "CMD", "pg_isready", "-U", "postgres" ]
 
